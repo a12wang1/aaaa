@@ -74,7 +74,9 @@ router.get('/page:page', function(req, res, next) {
       if (items.total % blockCount ==0) {
         items.totalPages = items.total /blockCount;
       }else{
-        items.totalPages = Math.ceil(items.total /blockCount);
+        console.log(11,items.total/blockCount);
+        items.totalPages = Math.floor(items.total/blockCount)+1;
+        console.log(22,Math.ceil(items.total/blockCount));
       }
       if (lastBlock.number - blockCount < 0) {
         blockCount = lastBlock.number + 1;
