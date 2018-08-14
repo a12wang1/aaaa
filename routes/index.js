@@ -4,14 +4,14 @@ var router = express.Router();
 var async = require('async');
 var Web3 = require('web3');
 
-
+var items = {};
+var pages = {};
 router.get('/', function(req, res, next) {
   
   var config = req.app.get('config');  
   var web3 = new Web3();
   web3.setProvider(config.provider);
-  var items = {};
-  var pages = {};
+
   async.waterfall([
     function(callback) {
       web3.eth.getBlock("latest", false, function(err, result) {
@@ -62,7 +62,7 @@ router.get('/page:page', function(req, res, next) {
   var config = req.app.get('config');  
   var web3 = new Web3();
   web3.setProvider(config.provider);
-  var items = {};
+  // var items = {};
   async.waterfall([
     function(callback) {
       web3.eth.getBlock("latest", false, function(err, result) {
