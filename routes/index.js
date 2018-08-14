@@ -11,6 +11,7 @@ router.get('/', function(req, res, next) {
   var web3 = new Web3();
   web3.setProvider(config.provider);
   var items = {};
+  var pages = {};
   async.waterfall([
     function(callback) {
       web3.eth.getBlock("latest", false, function(err, result) {
@@ -18,12 +19,12 @@ router.get('/', function(req, res, next) {
       });
     }, function(lastBlock, callback) {
       var blocks = [];
-      items.total = lastBlock.number;
+      pages.total = lastBlock.number;
       var blockCount = 10;
-      if (items.total % blockCount ==0) {
-        items.totalPages = items.total /blockCount;
+      if (pages.total % blockCount ==0) {
+        pages.totalPages = pages.total /blockCount;
       }else{
-        items.totalPages = items.total /blockCount +1;
+        pages.totalPages = Math.ceil(pages.total /blockCount);
       }
       if (lastBlock.number - blockCount < 0) {
         blockCount = lastBlock.number + 1;
@@ -51,7 +52,7 @@ router.get('/', function(req, res, next) {
         txs.push(tx);
       });
     });
-    res.render('index', { blocks: blocks, txs: txs , items: items});
+    res.render('index', { blocks: blocks, txs: txs , items: items, pages : pages});
   });
   
 });
@@ -71,17 +72,10 @@ router.get('/page:page', function(req, res, next) {
       var blocks = [];
       items.total = lastBlock.number;
       var blockCount = 10;
-      if (items.total % blockCount ==0) {
-        items.totalPages = items.total /blockCount;
-      }else{
-        console.log(11,items.total/blockCount);
-        items.totalPages = Math.floor(items.total/blockCount)+1;
-        console.log(22,Math.ceil(items.total/blockCount));
-      }
       if (lastBlock.number - blockCount < 0) {
         blockCount = lastBlock.number + 1;
       }
-      items.currentPage = 1;
+      items.currentPage = 3;
       async.times(blockCount, function(n, next) {
         web3.eth.getBlock(lastBlock.number - n, true, function(err, block) {
           next(err, block);

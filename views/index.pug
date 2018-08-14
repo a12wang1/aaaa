@@ -22,9 +22,9 @@ block content
           td #{block.uncles.length}
   .paginator
     | 第 #{items.currentPage} 页, 
-    | 共 #{items.totalPages} 页, 
-    | 总计 #{items.total} 条数据. 
-    a(href="?page=1") 第一页
+    | 共 #{pages.totalPages} 页, 
+    | 总计 #{pages.total} 条数据. 
+    a(href="?page:1") 第一页
     if items.currentPage !== 1
       a(href="/page:#{items.currentPage - 1}") 上一页
     - for(var i = items.currentPage - 2; i <= items.currentPage + 2; i++)
@@ -32,7 +32,7 @@ block content
         a(href="/page:#{i}")=i
     if items.currentPage !== items.totalPages
       a(href="/page:#{items.currentPage + 1}") 下一页
-    a(href="/page:#{items.totalPages}") 最后一页
+    a(href="/page:#{pages.totalPages}") 最后一页
   h3 Recent Transactions
   if txs.length === 0
     p No transactions during the last 10 blocks
